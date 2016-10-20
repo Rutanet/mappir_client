@@ -15,6 +15,7 @@ defmodule Mappirclient.Mixfile do
   end
 
   defp deps do
-    [{:httpoison, "~>0.9.0"}]
+    [{:httpoison, "~>0.9.0"},
+     {:poison, "~> 3.0"}]
   end
 end
