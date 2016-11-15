@@ -3,24 +3,18 @@ defmodule MappirClient.LocationSearch do
   @usr "sct"
   @key "sct"
 
-  def process_response({:ok, response}) do
-    response |> results |> reestructure
-  end
-  def process_response(_), do: []
+  def process_response({:error, _}), do: []
+  def process_response({:ok, response}), do: response |> results |> reestructure
 
-  def results(%HTTPoison.Response{body: {:ok, body}, status_code: 200}) do
-    body["results"]
-  end
-  def results(_), do: []
+  def results(%HTTPoison.Response{status_code: sc}) when sc != 200, do: []
+  def results(%HTTPoison.Response{body: body}), do: body
 
   def to_path(search_term) do
     @endpoint <> "?" <> params(search_term)
   end
 
   defp params(term) do
-    URI.encode_query(%{"search" => term,
-                       "usr" => @usr,
-                       "key" => @key})
+    URI.encode_query(%{search: term, usr: @usr, key: @key})
   end
 
   defp reestructure(results) do

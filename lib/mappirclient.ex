@@ -1,13 +1,16 @@
 defmodule MappirClient do
   use HTTPoison.Base
-  alias MappirClient.{LocationSearch, Route}
+  alias MappirClient.{LocationSearch, Route, Response}
 
   def process_url(path) do
     "http://ttr.sct.gob.mx/TTR/rest/" <> path
   end
 
   def process_response_body(body) do
-    body |> Poison.decode
+    case Poison.decode(body, as: %Response{}) do
+      {:ok, %Response{code: 100, status: "OK", results: res}} -> res
+      _ -> []
+    end
   end
 
   def search_location(term) do
