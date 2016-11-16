@@ -1,6 +1,6 @@
-defmodule MappirclientTest do
+defmodule MappirClientTest do
   use ExUnit.Case
-  doctest Mappirclient
+  doctest MappirClient
 
   test "the truth" do
     assert 1 + 1 == 2
